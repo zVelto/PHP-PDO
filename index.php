@@ -49,20 +49,21 @@ try {
 
 
     $query = '
-        select * from tb_usuarios
+        select * from tb_usuarios order by nome desc limit 1
     ';
 
     $stmt = $conexao->query($query); //PDO Statemet
     // $lista = $stmt->fetchAll(PDO::FETCH_ASSOC); //retorno associativo 
     // $lista = $stmt->fetchAll(PDO::FETCH_NUM); //retorno numérico 
     // $lista = $stmt->fetchAll(PDO::FETCH_BOTH); //retorno associativo e numérico 
-    $lista = $stmt->fetchAll(PDO::FETCH_OBJ); //retorno objeto 
+    $usuario = $stmt->fetch(PDO::FETCH_OBJ); //retorno objeto 
 
     echo '<pre>';
-        print_r($lista);
+        print_r($usuario);
     echo '</pre>';
 
-    echo $lista[1]->nome; 
+    echo $usuario->nome; //para acessar o que vem o BD -  objetos
+    // echo $usuario['nome']; //para acessar o que vem o BD -  arrays
 
 } catch (PDOException $e) {
     // echo '<pre>';
