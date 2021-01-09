@@ -53,13 +53,16 @@ try {
     ';
 
     $stmt = $conexao->query($query); //PDO Statemet
-    $lista = $stmt->fetchAll();
+    // $lista = $stmt->fetchAll(PDO::FETCH_ASSOC); //retorno associativo 
+    // $lista = $stmt->fetchAll(PDO::FETCH_NUM); //retorno numérico 
+    // $lista = $stmt->fetchAll(PDO::FETCH_BOTH); //retorno associativo e numérico 
+    $lista = $stmt->fetchAll(PDO::FETCH_OBJ); //retorno objeto 
 
     echo '<pre>';
         print_r($lista);
     echo '</pre>';
 
-    echo $lista[2]['email'];
+    echo $lista[1]->nome; 
 
 } catch (PDOException $e) {
     // echo '<pre>';
