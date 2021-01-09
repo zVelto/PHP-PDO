@@ -1,82 +1,49 @@
 <?php
 
-$dsn = 'mysql:host=localhost;dbname=php_com_pdo';
-$usuario = 'root';
-$senha = '';
+if(!empty($_POST['usuario']) && !empty($_POST['senha'])) {
 
-try {
-    $conexao = new PDO($dsn, $usuario, $senha);
-    /*
-        $query = '
-            create table tb_usuarios(
-                    id int not null primary key auto_increment,
-                    nome varchar (50) not null,
-                    email varchar(100) not null,
-                    senha varchar(32) not null
-                )
-        ';
-        $retorno = $conexao->exec($query); //retorno 0, pois nao estamos modificando registros
+    $dsn = 'mysql:host=localhost;dbname=php_com_pdo';
+    $usuario = 'root';
+    $senha = '';
 
-        echo $retorno;
-        */
-    // $query = '
-    //             insert into tb_usuarios(
-    //                 nome, email, senha 
-    //             ) values (
-    //                 "Jorge Sant Ana", "jorge@teste.com.br", "123456"
-    //             )
-    // ';
+    try {
+        $conexao = new PDO($dsn, $usuario, $senha);
+        
+        $query = "select * from tb_usuarios where";
+        $query .= " email = '{$_POST['usuario']}' ";
+        $query .= " AND senha = '{$_POST['senha']}'";
 
-    // $conexao->exec($query);
+        echo $query;
 
-    // $query = '
-    //             insert into tb_usuarios(
-    //                 nome, email, senha 
-    //             ) values (
-    //                 "Jamilton Damasceno", "jamilton@teste.com.br", "456789"
-    //             )
-    // ';
-    // $conexao->exec($query);
+        $stmt = $conexao->query($query);
 
-    // $query = '
-    //     insert into tb_usuarios(
-    //         nome, email, senha 
-    //     ) values (
-    //         "Maria Silva", "maria@teste.com.br", "456123"
-    //     )
-    // ';
-    // $conexao->exec($query);
-
-
-    $query = '
-        select * from tb_usuarios 
-    ';
-
-    //$stmt = $conexao->query($query); //PDO Statemet
-
-    foreach($conexao->query($query) as $chave => $valor){
-        print_r($valor['nome']);
+        $usuario = $stmt->fetch();
         echo '<hr>';
+
+        echo '<pre>';
+            print_r($usuario);
+        echo '</pre>';
+    } catch (PDOException $e) {
+        echo 'Erro: ' . $e->getCode() . ' Mensagem: ' . $e->getMessage();
+        //registrar o erro de alguma forma.
     }
 
-    //$lista_usuario = $stmt->fetchAll(PDO::FETCH_ASSOC); //retornará arrays
-
-    // echo '<pre>';
-    //     print_r($lista_usuario);
-    // echo '</pre>';
-
-    /*
-    foreach($lista_usuario as $key => $value) {
-        echo $value['nome'];
-        echo '<hr/>';
-    }
-    */
-
-} catch (PDOException $e) {
-    // echo '<pre>';
-    //     print_r($e);
-    // echo '</pre>';
-
-    echo 'Erro: ' . $e->getCode() . ' Mensagem: ' . $e->getMessage();
-    //registrar o erro de alguma forma.
 }
+?>
+
+<html>
+    <meta charset="utf-8">
+    <title>Login</title>
+</html>
+
+
+
+<body>
+    <form method="post" action="index.php">
+        <input type="text" placeholder="usuário" name="usuario"/>
+        <br/>
+        <input type="password" placeholder="senha" name="senha"/>
+        <br/>
+        <button type="submit">Entrar</button>
+    </form>
+</body>
